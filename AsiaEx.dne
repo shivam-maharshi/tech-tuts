@@ -1,0 +1,86 @@
+// ~->[DNET-1]->~
+
+// File created by an unlicensed user using Netica 5.04 on Oct 28, 2015 at 02:06:16.
+
+bnet Unnamed_1 {
+autoupdate = FALSE;
+
+node visitAsia {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (visit, no_visit);
+	parents = ();
+	probs = 
+		// visit        no visit     
+		  (0.01,        0.99);
+	title = "Visit to Asia";
+	};
+
+node tuberculosis {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (present, absent);
+	parents = (visitAsia);
+	probs = 
+		// present      absent        // visitAsia 
+		  (0.05,        0.95,         // visit     
+		   0.01,        0.99);        // no visit  ;
+	title = "Tuberculosis";
+	};
+
+node smoking {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (smoker, nonsmoker);
+	parents = ();
+	probs = 
+		// smoker       nonsmoker    
+		  (0.5,         0.5);
+	title = "Smoking";
+	};
+
+node cancer {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (present, absent);
+	parents = (smoking);
+	probs = 
+		// present      absent        // smoking   
+		  (0.1,         0.9,          // smoker    
+		   0.01,        0.99);        // nonsmoker ;
+	title = "Lung Cancer";
+	};
+
+node tbOrCa {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = DETERMIN;
+	states = (true, false);
+	parents = (cancer, tuberculosis);
+	functable = 
+		                    // cancer  tuberculosis 
+		  (true,            // present present      
+		   true,            // present absent       
+		   true,            // absent  present      
+		   false);          // absent  absent       ;
+	equation = "tbOrCa (tuberculosis, cancer) = tuberculosis || cancer";
+	title = "Tuberculosis or Cancer";
+	};
+
+node xRay {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (abnormal, normal);
+	parents = (tbOrCa);
+	probs = 
+		// abnormal     normal        // tbOrCa 
+		  (0.98,        0.02,         // true   
+		   0.05,        0.95);        // false  ;
+	title = "X-Ray";
+	};
+};
