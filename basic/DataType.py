@@ -14,6 +14,7 @@ print(aList[2:4])
 print (aList + bList)
 # Update list
 aList[2] = 1000
+aList.append(999999)
 print (aList)
 
 # Tuples size cannot be changed - read only lists.
@@ -29,10 +30,14 @@ print(aTuple + bTuple)
 # Dictionary is equivalent of Maps in python
 
 dic = {}
+# The key in dictionary must be immutable and hashable.
 dic['key'] = "This is my value."
 dic[2] = "This is integer value."
 
 print (dic['key'])
 print (dic.keys())
 print (dic.values())
-
+del dic[2]
+print (dic)
+dic.clear()
+print(dic)
