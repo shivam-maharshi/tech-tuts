@@ -1,3 +1,9 @@
+'''
+Created on Mar 4, 2016
+
+@author: shivam.maharshi
+'''
+
 # List in Python can be hetrogenous type.
 
 aList = ['abc', 1234, "cde", 2.4, 546]

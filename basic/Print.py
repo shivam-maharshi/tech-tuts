@@ -1,3 +1,9 @@
+'''
+Created on Mar 4, 2016
+
+@author: shivam.maharshi
+'''
+
 greetings = "Hello "
 name = "Shivam Maharshi"
 print (greetings + name[0:6])

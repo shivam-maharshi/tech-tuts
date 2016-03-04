@@ -1,3 +1,9 @@
+'''
+Created on Mar 4, 2016
+
+@author: shivam.maharshi
+'''
+
 a = "15"
 print(int(a)) 
 print (int(a, 10))
