@@ -12,6 +12,7 @@ def customPrint(string):
     return 1
 
 def add(a, *varTuple, b=100):
+    print(locals())     # Returns a list of names that can be accessed locally.
     a += 2 * b
     for var in varTuple:
         a += var
