@@ -25,6 +25,9 @@ print("Age of the employee: ", createdEmp.age)
 print("Is Age present in Employee class? - ", hasattr(createdEmp, "age"))
 print("Value of Name attribute in Employee class: ", getattr(createdEmp, "name"))
 print("Set the value of salary in Employee class: ", setattr(createdEmp, "name", "Sam Maharshi"))
+# Add some attribute that doesn't exists, it is added to it now.
+print("Set the value of salary in Employee class: ", setattr(createdEmp, "city", "New York"))
+print("Class dictionary: ", createdEmp.__dict__)
 print("Delete the age attribute. We don't need it. ", delattr(createdEmp, "age"))
 createdEmp.displayEmployee()
 # The object's reference count decreases when it's deleted with del, its reference is reassigned, or its reference goes out of scope.

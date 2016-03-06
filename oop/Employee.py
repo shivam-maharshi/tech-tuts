@@ -11,7 +11,7 @@ class Employee:
     empCount = 0;   # This is a class variable shared by the whole class.
 
 
-    def __init__(self, name, salary):
+    def __init__(self, name, salary=100):
         '''
         Constructor
         '''
