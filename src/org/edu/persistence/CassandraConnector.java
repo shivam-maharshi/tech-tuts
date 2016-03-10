@@ -11,6 +11,7 @@ import com.datastax.driver.core.Session;
  * @author shivam.maharshi
  */
 public class CassandraConnector {
+	
 	private Cluster cluster;
 	private Session session;
 
@@ -55,15 +56,4 @@ public class CassandraConnector {
 		return client;
 	}
 
-	/**
-	 * Main function for demonstrating connecting to Cassandra with host and
-	 * port.
-	 *
-	 * @param args
-	 *            Command-line arguments; first argument, if provided, is the
-	 *            host and second argument, if provided, is the port.
-	 */
-	public static void main(final String[] args) {
-		CassandraConnector client = getClient("127.0.0.1", 9042);
-	}
 }

@@ -1,9 +1,10 @@
 package org.edu.persistence;
 
 import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Session;
 
 /**
- * Creates a new table with the given connection.
+ * Performs DB operations for a given cassandra connector the given connection.
  * 
  * @author shivam.maharshi
  */
@@ -14,7 +15,11 @@ public class DataAccess {
 		this.client = CassandraConnector.getClient(ip, port);
 	}
 
-	// Creates keyspace.
+	/**
+	 * Creates keyspace.
+	 * 
+	 * @param keyspace
+	 */
 	public void createKeyspace(String keyspace) {
 		String createKeyspace = "CREATE KEYSPACE " + keyspace
 				+ " WITH replication = {'class' : 'SimpleStrategy', 'replication_factor' : 1};";
@@ -23,24 +28,28 @@ public class DataAccess {
 			System.out.println("Keyspace successfully created.");
 	}
 
-	// Creates table.
+	/**
+	 * Creates table.
+	 * 
+	 * @param query
+	 */
 	public void createTable(String query) {
 		ResultSet rs = this.client.getSession().execute(query);
 		if (rs.isExhausted())
 			System.out.println("Table successfully created.");
 	}
-	
-	public void close() {
-		client.close();
+
+	/**
+	 * Return session.
+	 * 
+	 * @return
+	 */
+	public Session getSession() {
+		return this.client.getSession();
 	}
 
-	public static void main(String[] args) {
-		DataAccess dbo = new DataAccess("127.0.0.1", 9042);
-		dbo.createKeyspace("movies_keyspace");
-		String createMovieCql = "CREATE TABLE movies_keyspace.movies (title varchar, year int, description varchar, "
-				+ "mmpa_rating varchar, dustin_rating varchar, PRIMARY KEY (title, year))";
-		dbo.createTable(createMovieCql);
-		dbo.close();
+	public void close() {
+		client.close();
 	}
 
 }
