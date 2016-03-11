@@ -1,6 +1,7 @@
 package org.edu.persistence;
 
 import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 
 /**
@@ -29,14 +30,21 @@ public class DataAccess {
 	}
 
 	/**
-	 * Creates table.
+	 * Executes queries. Should be used to change schema only. The data should
+	 * be accessed using persistence. For example  alter tables, add indexes etc.
 	 * 
 	 * @param query
 	 */
-	public void createTable(String query) {
+	public void executeQuery(String query) {
 		ResultSet rs = this.client.getSession().execute(query);
 		if (rs.isExhausted())
-			System.out.println("Table successfully created.");
+			System.out.println("Query executed successfully.");
+	}
+
+	public void describe(String entity) {
+		ResultSet rs = this.client.getSession().execute("DESCRIBE " + entity);
+		for (Row row : rs.all())
+			System.out.println(row.getColumnDefinitions());
 	}
 
 	/**
