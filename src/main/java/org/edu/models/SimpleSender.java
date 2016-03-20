@@ -1,4 +1,4 @@
-package org.sam.edu;
+package org.edu.models;
 
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
@@ -9,7 +9,7 @@ import com.rabbitmq.client.Channel;
  * 
  * @author shivam.maharshi
  */
-public class Sender {
+public class SimpleSender {
 
 	private final static String QUEUE_NAME = "hello";
 

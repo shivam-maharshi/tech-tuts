@@ -1,4 +1,4 @@
-package org.sam.edu;
+package org.edu.models;
 
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ import com.rabbitmq.client.Envelope;
  * 
  * @author shivam.maharshi
  */
-public class Receiver {
+public class SimpleReceiver {
 
 	private final static String QUEUE_NAME = "hello";
 
@@ -26,15 +26,23 @@ public class Receiver {
 		Channel channel = connection.createChannel();
 		channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 		System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
-		Consumer consumer = new DefaultConsumer(channel) {
-			@Override
-			public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
-					byte[] body) throws IOException {
-				String message = new String(body, "UTF-8");
-				System.out.println(" [x] Received '" + message + "'");
-			}
-		};
+		Consumer consumer = new SimpleConsumer(channel);
 		channel.basicConsume(QUEUE_NAME, true, consumer);
+	}
+
+}
+
+class SimpleConsumer extends DefaultConsumer {
+
+	public SimpleConsumer(Channel channel) {
+		super(channel);
+	}
+
+	@Override
+	public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
+			throws IOException {
+		String message = new String(body, "UTF-8");
+		System.out.println(" [x] Received '" + message + "'");
 	}
 
 }
