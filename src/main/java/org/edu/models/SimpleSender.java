@@ -5,7 +5,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
 
 /**
- * A sample Sender class that produces and puts messages onto queue.
+ * A simple Sender class that produces and puts messages onto queue.
  * 
  * @author shivam.maharshi
  */

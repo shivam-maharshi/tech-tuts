@@ -11,20 +11,27 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
 /**
- * A sample Receiver class that consumes messages from queue.
+ * A task Receiver class that consumes messages from queue in a non round robin
+ * fashion, because round robin can be unfair. Hence a tasks is assigned to
+ * workers only if they have finished the tasks before them. After every task,
+ * an acknowledgement is sent as well.
  * 
  * @author shivam.maharshi
  */
 public class TaskReceiver {
 
-	private final static String QUEUE_NAME = "hello";
+	private final static String QUEUE_NAME = "DurableQueue";
 
 	public static void main(String[] argv) throws java.io.IOException, java.lang.InterruptedException {
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost("localhost");
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
-		channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+		boolean durable = true;
+		channel.queueDeclare(QUEUE_NAME, durable, false, false, null);
+		// not to give more than one message to a worker at a time
+		int prefetchCount = 1;
+		channel.basicQos(prefetchCount);
 		System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 		Consumer consumer = new TaskConsumer(channel);
 		channel.basicConsume(QUEUE_NAME, true, consumer);
@@ -49,6 +56,8 @@ class TaskConsumer extends DefaultConsumer {
 			e.printStackTrace();
 		} finally {
 			System.out.println(" [x] Done for message: " + message);
+			// Make sure that we receive acknowledgement to ensure delivery.
+			this.getChannel().basicAck(envelope.getDeliveryTag(), false);
 		}
 	}
 

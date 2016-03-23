@@ -11,7 +11,8 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
 /**
- * A sample Receiver class that consumes messages from queue.
+ * A simple Receiver class that consumes messages from queue in a round robin
+ * fashion by default.
  * 
  * @author shivam.maharshi
  */
