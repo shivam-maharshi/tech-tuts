@@ -16,6 +16,16 @@ import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
+/**
+ * Receiver of Pub/Sub model. Create two unique queues on and bind them to the
+ * exchange on which the producer is uploading results. The two queues have
+ * their consumers here. One is responsible for printing it on console, other
+ * one is responsible for writing it onto a log file. Here we are using the
+ * fanout exchange. There are four main exchange types - direct, topic, headers
+ * & fanout.
+ * 
+ * @author shivam.maharshi
+ */
 public class PubSubReceiver {
 
 	private static final String EXCHANGE_NAME = "logs";
@@ -25,8 +35,9 @@ public class PubSubReceiver {
 		factory.setHost("localhost");
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
-
+		// We are using the fanout type exchange.
 		channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+		// Two temporary queues are bound to the exchange.
 		// Get unique queue name and bind Console Writer to it.
 		String queueName = channel.queueDeclare().getQueue();
 		channel.queueBind(queueName, EXCHANGE_NAME, "");
@@ -51,7 +62,9 @@ class ConsoleWriterConsumer extends DefaultConsumer {
 	public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
 			throws IOException {
 		String message = new String(body, "UTF-8");
-		System.out.println(" [x] Received '" + message + "'");
+		System.out.println("[x] Received '" + message + "'\n");
+		if(envelope.getRoutingKey()!=null)
+		System.out.println("[x] Routing key " + envelope.getRoutingKey());
 	}
 
 }
@@ -74,7 +87,7 @@ class FileWriterConsumer extends DefaultConsumer {
 	public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
 			throws IOException {
 		String message = new String(body, "UTF-8");
-		writer.write(message);
+		writer.write(message+"\n");
 		writer.flush();
 	}
 
