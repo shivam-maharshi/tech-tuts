@@ -1,4 +1,4 @@
-package org.vt.edu.server;
+package org.edu.server;
 
 import java.net.InetSocketAddress;
 import java.nio.channels.AsynchronousServerSocketChannel;

@@ -1,4 +1,4 @@
-package org.vt.edu.server;
+package org.edu.server;
 
 /**
  * Performs the tasks with the input.

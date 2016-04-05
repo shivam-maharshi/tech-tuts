@@ -1,14 +1,19 @@
-package org.vt.edu.server;
+package org.edu.server;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 
+import org.edu.response.provider.NoContentProvider;
+import org.edu.response.provider.ResponseProvider;
+
 /**
  * @author shivam.maharshi
  */
 public class RequestHandler implements CompletionHandler<Integer, Connection> {
+	
+	ResponseProvider responseProvider = new NoContentProvider();
 
 	@Override
 	public void completed(Integer result, Connection connection) {
@@ -43,7 +48,7 @@ public class RequestHandler implements CompletionHandler<Integer, Connection> {
 		// Two tasks - Forward HTTP Request & Respond with 204.
 		TasksProcessor.forwardHttpRequest(bytes);
 		buffer.clear();
-		bytes = "HTTP/1.1 204 OK\r\nContent-Length: 0\r\n\r\n".getBytes();
+		bytes = responseProvider.getResponse(null);
 		buffer.put(bytes).flip();
 	}
 
