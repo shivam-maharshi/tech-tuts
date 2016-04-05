@@ -7,14 +7,17 @@ import java.nio.channels.CompletionHandler;
 
 import org.edu.response.provider.NoContentProvider;
 import org.edu.response.provider.ResponseProvider;
+import org.edu.task.processor.HttpRequestForwardProcessor;
+import org.edu.task.processor.TasksProcessor;
 
 /**
  * @author shivam.maharshi
  */
 public class RequestHandler implements CompletionHandler<Integer, Connection> {
 	
-	ResponseProvider responseProvider = new NoContentProvider();
-
+	private static ResponseProvider responseProvider = new NoContentProvider();
+	private static TasksProcessor forwardHttpRequestProcessor = new HttpRequestForwardProcessor();
+	
 	@Override
 	public void completed(Integer result, Connection connection) {
 		AsynchronousSocketChannel client = connection.getClient();
@@ -46,7 +49,7 @@ public class RequestHandler implements CompletionHandler<Integer, Connection> {
 		byte[] bytes = new byte[buffer.limit()];
 		buffer.get(bytes);
 		// Two tasks - Forward HTTP Request & Respond with 204.
-		TasksProcessor.forwardHttpRequest(bytes);
+		forwardHttpRequestProcessor.process(bytes);
 		buffer.clear();
 		bytes = responseProvider.getResponse(null);
 		buffer.put(bytes).flip();
