@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.bson.Document;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -21,6 +22,7 @@ public class Insert {
 			MongoClient client = new MongoClient("127.0.0.1", 27017);
 			MongoDatabase db = client.getDatabase("local");
 			System.out.println("Connect to database successfully");
+			// First way of inserting.
 			MongoCollection<Document> coll = db.getCollection("blog");
 			Map<String, Object> map = new LinkedHashMap<String, Object>();
 			map.put("title", "MongoDB");
@@ -30,6 +32,9 @@ public class Insert {
 			map.put("by", "GitHub");
 			Document doc = new Document(map);
 			coll.insertOne(doc);
+			// Another way of inserting
+			MongoCollection<BasicDBObject> col = db.getCollection("blog", BasicDBObject.class);
+			col.insertOne(new BasicDBObject().append("title", "HBase").append("description", "db").append("by", "sam"));
 			client.close();
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
