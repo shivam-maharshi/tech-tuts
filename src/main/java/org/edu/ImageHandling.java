@@ -13,7 +13,12 @@ import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
 
 /**
- * Save and read an image into & from MongoDB Grid File System.
+ * Save and read an image into & from MongoDB Grid File System which is a
+ * specification for storing BSON-document exceeding size limit of 16MB. It
+ * stores bigger files in chunks of specified size. This allows to skip to the
+ * portion of an audio or video file quickly. More on Grid file system.
+ * 
+ * Link: http://api.mongodb.org/java/current/com/mongodb/gridfs/GridFS.html
  * 
  * @author shivam.maharshi
  */
