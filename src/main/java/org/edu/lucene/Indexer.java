@@ -11,7 +11,7 @@ import org.apache.lucene.store.Directory;
  * 
  * @author shivam.maharshi
  */
-public interface Index {
+public interface Indexer {
 	
 	public void create() throws Exception;
 	
