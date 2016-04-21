@@ -1,6 +1,10 @@
 package org.edu.lucene;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -25,11 +29,17 @@ import org.apache.lucene.util.Version;
  * 
  * @author shivam.maharshi
  */
-public class InMemoryIndex {
-	
-	public static Directory createIndex() throws IOException {
+public class InMemoryIndex implements Index {
+
+	Directory index;
+
+	public void create() throws IOException {
+		create(null);
+	}
+
+	public void create(Object data) throws IOException {
 		StandardAnalyzer analyzer = new StandardAnalyzer();
-		Directory index = new RAMDirectory();
+		this.index = new RAMDirectory();
 		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_4_10_3, analyzer);
 		IndexWriter writer = new IndexWriter(index, config);
 		add(writer, "CS", "BufferedReader improves performance.");
@@ -37,35 +47,46 @@ public class InMemoryIndex {
 		add(writer, "History", "Columbus was stupid!");
 		writer.commit();
 		writer.close();
-		return index;
 	}
-	
-	public static void query(Directory index, Query query) throws IOException {
+
+	public void search(Map<String, String> qparams, List<String> oparams) throws IOException, ParseException {
 		IndexReader reader = DirectoryReader.open(index);
 		IndexSearcher searcher = new IndexSearcher(reader);
-		TopDocs resultDocs = searcher.search(query, 10);
-		int totalHits = resultDocs.totalHits;
-		ScoreDoc[] docs = resultDocs.scoreDocs;
-		System.out.println("Total Search Hits: "+totalHits);
-		for(ScoreDoc doc : docs) {
-			Document d = searcher.doc(doc.doc);
-			System.out.println("Topic: "+d.get("topic") + " | Content: "+ d.get("content"));
+		for (String key : qparams.keySet()) {
+			Query query = new QueryParser(key, new StandardAnalyzer()).parse(qparams.get(key));
+			TopDocs result = searcher.search(query, 10);
+			ScoreDoc[] hits = result.scoreDocs;
+			System.out.println(String.format("Found %s hits.", hits.length));
+			for (ScoreDoc hit : hits) {
+				Document document = searcher.doc(hit.doc);
+				StringBuilder sb = new StringBuilder("Result");
+				for(String o: oparams)
+				sb.append(" | ").append(o).append(":").append(document.get(o));
+				System.out.println(sb.toString());
+			}
 		}
 	}
-	
+
 	public static void add(IndexWriter writer, String topic, String content) throws IOException {
 		Document doc = new Document();
 		doc.add(new TextField("topic", topic, Store.YES));
 		doc.add(new TextField("content", content, Store.YES));
 		writer.addDocument(doc);
 	}
-	
-	public static void main(String[] args) throws IOException, ParseException {
-		Directory index = createIndex();
-		Query query = new QueryParser("topic", new StandardAnalyzer()).parse("History");
-		query(index, query);
-		query = new QueryParser("content", new StandardAnalyzer()).parse("myth");
-		query(index, query);
+
+	public static void main(String[] args) throws Exception {
+		Index index = new InMemoryIndex();
+		index.create();
+		Map<String, String> qparams = new HashMap<String, String>();
+		qparams.put("topic", "history");
+		List<String> oparams = new ArrayList<String>();
+		oparams.add("topic");
+		oparams.add("content");
+		index.search(qparams, oparams);
+	}
+
+	public Directory get() throws IOException {
+		return index;
 	}
 
 }
