@@ -1,4 +1,4 @@
-package org.edu.solr;
+package org.edu.solr.client;
 
 import java.io.IOException;
 
