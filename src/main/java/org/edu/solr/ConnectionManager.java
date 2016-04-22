@@ -13,12 +13,12 @@ import org.apache.solr.client.solrj.response.SolrPingResponse;
  * 
  * @author shivam.maharshi
  */
-public class SolrClient {
+public class ConnectionManager {
 
 	private static final String URL_PATTERN = "http://%s:%d/solr/%s";
 	private SolrServer client;
 
-	public SolrClient(String host, int port, String collection) {
+	public ConnectionManager(String host, int port, String collection) {
 		String url = String.format(URL_PATTERN, host, port, collection);
 		this.client = new HttpSolrServer(url);
 	}
