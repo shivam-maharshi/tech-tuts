@@ -1,18 +1,15 @@
 package org.edu;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.matching;
-import static com.github.tomakehurst.wiremock.client.WireMock.notMatching;
-import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
-import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
-import static org.junit.Assert.*;
 
 import org.edu.RestClient.Status;
 import org.junit.Rule;
@@ -22,8 +19,12 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 /**
- * Mocking Rest services with the easiest and the most straight forward usage
- * using stubbing.
+ * Mocking REST services with the easiest and the most straight forward usage
+ * using stubbing. Performs these steps in order. 1. Mocks the web server part
+ * of the rest services. 2. Invokes the rest client to perform HTTP operations
+ * on the server. 3. Compares the response received with the expected response.
+ * Various cases like - success, failure, timeout, non-implemented etc have been
+ * demonstrated.
  * 
  * @author shivam.maharshi
  */
@@ -32,20 +33,74 @@ public class BasicMocking {
 	@Rule
 	public WireMockRule wireMockRule = new WireMockRule(WireMockConfiguration.wireMockConfig().port(8080));
 
-	public RestClient rc = new RestClient(8080, "myService/");
+	private RestClient rc = new RestClient(8080, "myService/");
+	private static final String RESPONSE_TAG = "response";
+	private static final String DATA_TAG = "data";
+	private static final String SUCCESS_RESPONSE = "<response>success</response>";
+	private static final String INPUT_DATA = "<field1>one</field1><field2>two</field2>";
+	private static final int RESPONSE_DELAY = 11000; // 11 seconds.
+	private static final String resource = "1";
 
 	@Test
-	public void exampleTest() {
-		stubFor(get(urlEqualTo("/myService/1")).withHeader("Accept", equalTo("*/*")).willReturn(aResponse()
-				.withStatus(200).withHeader("Content-Type", "text/xml").withBody("<response>Some content</response>")));
-
+	// Successfully read data.
+	public void read200() {
+		stubFor(get(urlEqualTo("/myService/1")).withHeader("Accept", equalTo("*/*")).willReturn(
+				aResponse().withStatus(200).withHeader("Content-Type", "text/xml").withBody(SUCCESS_RESPONSE)));
 		HashMap<String, String> result = new HashMap<String, String>();
-		Status status = rc.read(null, "1", null, result);
-		assertEquals(status, Status.OK);
+		Status status = rc.read(resource, result);
+		assertEquals(Status.OK, status);
+		assertEquals(result.get(RESPONSE_TAG), SUCCESS_RESPONSE);
+	}
 
-		// verify(postRequestedFor(urlMatching("/my/resource/[a-z0-9]+"))
-		// .withRequestBody(matching(".*<message>1234</message>.*"))
-		// .withHeader("Content-Type", notMatching("application/json")));
+	@Test
+	// Resource not found.
+	public void read400() {
+		stubFor(get(urlEqualTo("/myService/1")).withHeader("Accept", equalTo("*/*")).willReturn(
+				aResponse().withStatus(404).withHeader("Content-Type", "text/xml").withBody(SUCCESS_RESPONSE)));
+		HashMap<String, String> result = new HashMap<String, String>();
+		Status status = rc.read(resource, result);
+		assertEquals(Status.NOT_FOUND, status);
+		assertEquals(result.get(RESPONSE_TAG), SUCCESS_RESPONSE);
+	}
+
+	@Test
+	// Successfully insert data.
+	public void insert200() {
+		stubFor(post(urlEqualTo("/myService/1")).withHeader("Accept", equalTo("*/*"))
+				.withRequestBody(equalTo(INPUT_DATA)).willReturn(
+						aResponse().withStatus(200).withHeader("Content-Type", "text/xml").withBody(SUCCESS_RESPONSE)));
+		HashMap<String, String> data = new HashMap<String, String>();
+		data.put(DATA_TAG, INPUT_DATA);
+		Status status = rc.insert(resource, data);
+		assertEquals(Status.OK, status);
+	}
+
+	@Test
+	// Response delay will trigger timeout/socket exception.
+	public void insert500() {
+		stubFor(post(urlEqualTo("/myService/1")).withHeader("Accept", equalTo("*/*"))
+				.withRequestBody(equalTo(INPUT_DATA))
+				.willReturn(aResponse().withStatus(200).withHeader("Content-Type", "text/xml")
+						.withBody(SUCCESS_RESPONSE).withFixedDelay(RESPONSE_DELAY)));
+		HashMap<String, String> data = new HashMap<String, String>();
+		data.put(DATA_TAG, INPUT_DATA);
+		Status status = rc.insert(resource, data);
+		assertEquals(Status.ERROR, status);
+	}
+
+	@Test
+	// Successful delete.
+	public void delete200() {
+		stubFor(delete(urlEqualTo("/myService/1")).withHeader("Accept", equalTo("*/*")).willReturn(
+				aResponse().withStatus(200).withHeader("Content-Type", "text/xml").withBody(SUCCESS_RESPONSE)));
+		Status status = rc.delete(resource);
+		assertEquals(Status.OK, status);
+	}
+
+	@Test
+	// Non-implemented update.
+	public void update() {
+		assertEquals(Status.NOT_IMPLEMENTED, rc.update(resource, null));
 	}
 
 }

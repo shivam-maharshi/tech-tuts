@@ -33,7 +33,7 @@ import org.apache.http.util.EntityUtils;
  */
 public class RestClient {
 
-	private static boolean logEnabled = true;
+	private static boolean logEnabled = false;
 	private static boolean compressedResponse = false;
 	private String urlPrefix = "http://127.0.0.1:%d/%s";
 	private CloseableHttpClient client;
@@ -60,7 +60,7 @@ public class RestClient {
 		this.client = clientBuilder.setUserAgent("Mozilla/5.0").setConnectionManagerShared(true).build();
 	}
 
-	public Status read(String table, String endpoint, Set<String> fields, HashMap<String, String> result) {
+	public Status read(String endpoint, HashMap<String, String> result) {
 		int responseCode;
 		try {
 			responseCode = httpGet(urlPrefix + endpoint, result);
@@ -72,7 +72,7 @@ public class RestClient {
 		return getStatus(responseCode);
 	}
 
-	public Status insert(String table, String endpoint, HashMap<String, String> values) {
+	public Status insert(String endpoint, HashMap<String, String> values) {
 		int responseCode;
 		try {
 			responseCode = httpPost(urlPrefix + endpoint, values.get("data").toString());
@@ -84,7 +84,7 @@ public class RestClient {
 		return getStatus(responseCode);
 	}
 
-	public Status delete(String table, String endpoint) {
+	public Status delete(String endpoint) {
 		int responseCode;
 		try {
 			responseCode = httpDelete(urlPrefix + endpoint);
@@ -96,25 +96,20 @@ public class RestClient {
 		return getStatus(responseCode);
 	}
 
-	public Status update(String table, String key, HashMap<String, String> values) {
+	public Status update(String key, HashMap<String, String> values) {
 		System.out.println("Update not implemented.");
-		return Status.OK;
-	}
-
-	public Status scan(String table, String startkey, int recordcount, Set<String> fields,
-			Vector<HashMap<String, String>> result) {
-		System.out.println("Scan operation is not supported for RESTFul Web Services client.");
-		return Status.OK;
+		return Status.NOT_IMPLEMENTED;
 	}
 
 	private Status getStatus(int responseCode) {
 		if (responseCode / 100 == 5)
 			return Status.ERROR;
+		else if(responseCode /100 == 4)
+			return Status.NOT_FOUND;
 		return Status.OK;
 	}
 
 	private int handleExceptions(Exception e) {
-		e.printStackTrace();
 		if (e instanceof ClientProtocolException)
 			return 400;
 		return 500;
@@ -211,12 +206,16 @@ public class RestClient {
 
 	// Connection is automatically released back in case of an exception.
 	private int httpDelete(String endpoint) throws IOException {
+		requestTimedout.setSatisfied(false);
+		Thread timer = new Thread(new Timer(execTimeout, requestTimedout));
+		timer.start();
 		int responseCode = 200;
 		HttpDelete request = new HttpDelete(endpoint);
+		for (int i = 0; i < headers.length; i = i + 2)
+			request.setHeader(headers[i], headers[i + 1]);
 		CloseableHttpResponse response = client.execute(request);
 		responseCode = response.getStatusLine().getStatusCode();
-		if (response != null)
-			response.close();
+		response.close();
 		client.close();
 		return responseCode;
 	}
@@ -243,7 +242,7 @@ public class RestClient {
 	}
 
 	enum Status {
-		OK, ERROR;
+		OK, NOT_FOUND, ERROR, NOT_IMPLEMENTED;
 	}
 
 	class Criteria {
