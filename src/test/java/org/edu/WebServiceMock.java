@@ -12,11 +12,14 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashMap;
 
 import org.edu.RestClient.Status;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 
 /**
  * Mocking REST services with the easiest and the most straight forward usage
@@ -28,10 +31,14 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
  * 
  * @author shivam.maharshi
  */
-public class BasicMocking {
+public class WebServiceMock {
+
+	@ClassRule
+	public static WireMockClassRule wireMockRule = new WireMockClassRule(
+			WireMockConfiguration.wireMockConfig().port(8080));
 
 	@Rule
-	public WireMockRule wireMockRule = new WireMockRule(WireMockConfiguration.wireMockConfig().port(8080));
+	public WireMockClassRule instanceRule = wireMockRule;
 
 	private RestClient rc = new RestClient(8080, "myService/");
 	private static final String RESPONSE_TAG = "response";
@@ -40,6 +47,16 @@ public class BasicMocking {
 	private static final String INPUT_DATA = "<field1>one</field1><field2>two</field2>";
 	private static final int RESPONSE_DELAY = 11000; // 11 seconds.
 	private static final String resource = "1";
+
+	@BeforeClass
+	public static void startServer() {
+		wireMockRule.start();
+	}
+
+	@AfterClass
+	public static void stopServer() {
+		wireMockRule.shutdownServer();
+	}
 
 	@Test
 	// Successfully read data.

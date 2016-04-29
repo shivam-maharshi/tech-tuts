@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.Set;
-import java.util.Vector;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.http.HttpEntity;
@@ -104,7 +102,7 @@ public class RestClient {
 	private Status getStatus(int responseCode) {
 		if (responseCode / 100 == 5)
 			return Status.ERROR;
-		else if(responseCode /100 == 4)
+		else if (responseCode / 100 == 4)
 			return Status.NOT_FOUND;
 		return Status.OK;
 	}
