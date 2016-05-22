@@ -2,6 +2,9 @@
 Created on May 22, 2016
 
 @author: shivam.maharshi
+
+Link: http://www.geeksforgeeks.org/dynamic-programming-set-4-longest-common-subsequence/
+
 '''
 
 def naive_lcs(a, b, m, n):
