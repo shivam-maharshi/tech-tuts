@@ -1,2 +1,2 @@
 # FlaskPythonTutorial
-Flask Web Application Python tutorial to for a full fledged web app. 
+Flask Web Application Python tutorial for a full fledged web app. 
