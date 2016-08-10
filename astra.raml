@@ -1,0 +1,44 @@
+#%RAML 0.8
+  title: Astra API
+  baseUri: http://astra.rackspace.local/sso/{version}
+  version: v2
+
+  /idp.xml:
+    get:
+      description: Get the Saml Metadata for Astra IDP
+      queryParameters:
+        author:
+          displayName: Author
+          type: string
+          description: An author's full name
+          example: Mary Roach
+          required: false
+      responses:
+        200:
+          body:
+            application/xml:
+              description: A sample XML response
+              example: |
+                <?xml version="1.0" encoding="UTF-8"?>
+                  <md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" ID="idzihPa5hTft6PHTfboFEfc9a8ifo" entityID="https://company.com/nidp/saml2/metadata">
+                    <ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                      <ds:SignedInfo>
+                        <CanonicalizationMethod xmlns="http://www.w3.org/2000/09/xmldsig#" Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                        <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+                          <ds:Reference URI="#idzihPa5hTft6PHTfboFEfc9a8ifo">
+                          <ds:Transforms>
+                            <ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+                            <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                          </ds:Transforms>
+                          <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+                          <DigestValue xmlns="http://www.w3.org/2000/09/xmldsig#">q8CF3M7ates+FZ89L5i4UT7mJnA=</DigestValue>
+                        </ds:Reference>
+                      </ds:SignedInfo>
+                    <SignatureValue xmlns="http://www.w3.org/2000/09/xmldsig#">SigVal</SignatureValue>
+                  <ds:KeyInfo>
+                    <ds:X509Data>
+                      <ds:X509Certificate>certData</ds:X509Certificate>
+                      </ds:X509Data>
+                    </ds:KeyInfo>
+                  </ds:Signature>
+                </md:EntityDescriptor>
