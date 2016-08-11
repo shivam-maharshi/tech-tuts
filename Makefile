@@ -1,10 +1,13 @@
 #!/bin/bash
 
+GREEN='\033[0;32m'
+NC='\033[0m'
+
 .PHONY: install
 install: ## Prepares the environment for running RAML Api Console by MuleSoft
         if [! -d "api-console" ]; then git clone https://github.com/mulesoft/api-console; else echo "api-console already present!"; fi
         cd api-console
-        apt-get update
+#       apt-get update
         apt-get install -y nodejs
         apt-get install -y npm
         apt-get install -y gem
@@ -16,8 +19,10 @@ install: ## Prepares the environment for running RAML Api Console by MuleSoft
         npm install
         if [ -f /usr/bin/nodejs ]; then if [ ! -f /usr/bin/node ]; then ln -s /usr/bin/nodejs /usr/bin/node; fi; fi
         if [ -f ${PWD}/api-console/.bowerrc ]; then rm -rf ${PWD}/api-console/.bowerrc; fi
+        yes '' | bower init --allow-root
         bower install --allow-root
-        chmod 755 /home/~/.config/configstore/bower-github.json
+        chmod 755 ~/.config/configstore/bower-github.json
+        echo "${GREEN}Installation Successful !! :)${NC}"
 
 .PHONY: install_test
 install_test: ## Prepares the environment for running tests
@@ -34,8 +39,3 @@ test: ## Runs regression tests
 .PHONY: run
 run: ## Runs the grunt server to serve the Api Console
         grunt
-
-
-.PHONY: run
-run: ## Runs the grunt server to serve the Api Console
-	grunt
