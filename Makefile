@@ -1,7 +1,14 @@
 .PHONY: install
 install: ## Prepares the environment for running RAML Api Console by MuleSoft
-	git clone https://github.com/mulesoft/api-console
-  cd api-console
+	if [! -d "api-console" ] ; then git clone https://github.com/mulesoft/api-console ; else echo "api-console already present!" ; fi
+	cd api-console
+	apt-get update
+	apt-get install -y nodejs
+	apt-get install -y npm
+	apt-get install -y gem
+	apt-get install -y ruby
+	rm -rf /var/lib/apt/lists/*
+	
 	gem install sass
 	sudo npm install -g grunt-cli
 	sudo npm install -g bower
