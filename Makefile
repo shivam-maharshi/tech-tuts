@@ -7,7 +7,7 @@ NC='\033[0m'
 install: ## Prepares the environment for running RAML Api Console by MuleSoft
         if [! -d "api-console" ]; then git clone https://github.com/mulesoft/api-console; else echo "api-console already present!"; fi
         cd api-console
-#       apt-get update
+        apt-get update
         apt-get install -y nodejs
         apt-get install -y npm
         apt-get install -y gem
