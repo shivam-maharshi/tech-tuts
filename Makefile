@@ -1,7 +1,7 @@
 .PHONY: install
 install: ## Prepares the environment for running RAML Api Console by MuleSoft
-        git clone https://github.com/mulesoft/api-console
-        cd api-console
+	git clone https://github.com/mulesoft/api-console
+  cd api-console
 	gem install sass
 	sudo npm install -g grunt-cli
 	sudo npm install -g bower
