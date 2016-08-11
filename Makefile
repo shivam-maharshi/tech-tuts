@@ -14,6 +14,8 @@ install: ## Prepares the environment for running RAML Api Console by MuleSoft
         apt-get install -y ruby
         rm -rf /var/lib/apt/lists/*
         gem install sass
+        npm install grunt --save-dev
+        npm install --save-dev load-grunt-tasks
         npm install -g grunt-cli
         npm install -g bower
         npm install
@@ -27,9 +29,9 @@ install: ## Prepares the environment for running RAML Api Console by MuleSoft
 .PHONY: install_test
 install_test: ## Prepares the environment for running tests
         gem install sass
-        sudo npm install -g grunt-cli
-        sudo npm install -g protractor
-        sudo npm install
+        npm install -g grunt-cli
+        npm install -g protractor
+        npm install
         node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update
 
 .PHONY: test
@@ -38,4 +40,5 @@ test: ## Runs regression tests
 
 .PHONY: run
 run: ## Runs the grunt server to serve the Api Console
+        cd api-console
         grunt
