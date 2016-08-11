@@ -28,6 +28,7 @@ install: ## Prepares the environment for running RAML Api Console by MuleSoft
 
 .PHONY: install_test
 install_test: ## Prepares the environment for running tests
+        cd api-console
         gem install sass
         npm install -g grunt-cli
         npm install -g protractor
@@ -36,6 +37,7 @@ install_test: ## Prepares the environment for running tests
 
 .PHONY: test
 test: ## Runs regression tests
+        cd api-console
         grunt regression
 
 .PHONY: run
