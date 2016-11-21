@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+ <title>Basic JS</title>
+ <body>
+  <script>
+   "use strict";
+   var c = 1;
+   function changeFont(e) {
+    document.getElementById(e).style.fontSize='32px';
+	console.log(c + ' : Executed changeFont() function.');
+	c++;
+   }
+   function resetFont(e) {
+    document.getElementById(e).style.fontSize='16px';
+   }
+   function hideFont(e) {
+    document.getElementById(e).style.display='none';
+   }
+   function unhideFont(e) {
+    document.getElementById(e).style.display='block';
+   }
+  </script>
+ 
+  <h1>Basic JS</h1>
+  <p id="p1"></p>
+  <button type="button" onclick="document.getElementById('p1').innerHTML = Date()">Display Time</button>
+  <button type="button" onclick="changeFont('p1')">Change Font</button>
+  <button type="button" onclick="resetFont('p1')">Reset Font</button>
+  <button type="button" onclick="hideFont('p1')">Hide Text</button>
+  <button type="button" onclick="unhideFont('p1')">Unhide Text</button>
+ </body>
+</html>
