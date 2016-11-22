@@ -1,32 +1,77 @@
 <!DOCTYPE html>
 <html>
- <title>Basic JS</title>
- <body>
+  <title>Basic JS</title>
+  <style>
+	#container {
+      width: 400px;
+      height: 400px;
+      position: relative;
+      background: yellow;
+    }
+    #animate {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      background-color: red;
+    }
+  </style>
+  <body onload="add()" onunload="add()">
+    <h1>Basic JS</h1>
+    <p id="p1"></p>
+    <button type="button" onclick="document.getElementById('p1').innerHTML = Date()">Display Time</button>
+    <button type="button" onclick="changeFont('p1')">Change Font</button>
+    <button type="button" onclick="resetFont('p1')">Reset Font</button>
+    <button type="button" onclick="hideFont('p1')">Hide Text</button>
+    <button id="btn0" type="button">Unhide Text</button>
+	<p id='p0'></p>
+    <button onclick="myMove()">Click Me</button>
+    <div id ="container">
+	  <div id ="animate"></div>
+	</div>
+  </body>
   <script>
-   "use strict";
-   var c = 1;
-   function changeFont(e) {
-    document.getElementById(e).style.fontSize='32px';
-	console.log(c + ' : Executed changeFont() function.');
-	c++;
-   }
-   function resetFont(e) {
-    document.getElementById(e).style.fontSize='16px';
-   }
-   function hideFont(e) {
-    document.getElementById(e).style.display='none';
-   }
-   function unhideFont(e) {
-    document.getElementById(e).style.display='block';
-   }
+    "use strict";
+    var c = 1;
+    function changeFont(e) {
+      document.getElementById(e).style.fontSize = '32px';
+   	  console.log(c + ' : Executed changeFont() function.');
+	  c++;
+    }
+    function resetFont(e) {
+      document.getElementById(e).style.fontSize = '16px';
+    }
+    function hideFont(e) {
+      document.getElementById(e).style.display = 'none';
+    }
+	function unhideFont() {
+      document.getElementById('p1').style.display = 'block';
+    }
+	document.getElementById("btn0").addEventListener("click", unhideFont);
+    
+    (function () {
+      document.getElementById('p0').innerHTML = 'I Invoked myself!';
+    })();
+	
+	// A closure is a function having access to the parent scope, even after the parent function has closed.
+	var add = (function () {
+    var counter = 0;
+	console.log(counter + ' : Executed add() function.');
+    return function () {return counter += 1;}
+	})();
+	
+	function myMove() {
+    var elem = document.getElementById("animate"); 
+    var pos = 0;
+    var id = setInterval(frame, 5);
+    function frame() {
+      if (pos == 350) {
+        clearInterval(id);
+      } else {
+        pos++; 
+        elem.style.top = pos + 'px'; 
+        elem.style.left = pos + 'px'; 
+        }
+      }
+	}
   </script>
- 
-  <h1>Basic JS</h1>
-  <p id="p1"></p>
-  <button type="button" onclick="document.getElementById('p1').innerHTML = Date()">Display Time</button>
-  <button type="button" onclick="changeFont('p1')">Change Font</button>
-  <button type="button" onclick="resetFont('p1')">Reset Font</button>
-  <button type="button" onclick="hideFont('p1')">Hide Text</button>
-  <button type="button" onclick="unhideFont('p1')">Unhide Text</button>
- </body>
 </html>
