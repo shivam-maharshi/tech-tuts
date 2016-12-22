@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Vertical (basic) form</h2>
+  <form>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" class="form-control" id="email" placeholder="Enter email">
+    </div>
+    <div class="form-group">
+      <label for="pwd">Password:</label>
+      <input type="password" class="form-control" id="pwd" placeholder="Enter password">
+    </div>
+    <div class="checkbox">
+      <label><input type="checkbox"> Remember me</label>
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+  <br><br>
+   <form class="form-inline">
+  <div class="form-group">
+    <label for="email">Email address:</label>
+    <input type="email" class="form-control" id="email">
+  </div>
+  <div class="form-group">
+    <label for="pwd">Password:</label>
+    <input type="password" class="form-control" id="pwd">
+  </div>
+  <div class="checkbox">
+    <label><input type="checkbox"> Remember me</label>
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+<br><br>
+ <form class="form-horizontal">
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="email">Email:</label>
+    <div class="col-sm-10">
+      <input type="email" class="form-control" id="email" placeholder="Enter email">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="pwd">Password:</label>
+    <div class="col-sm-10">
+      <input type="password" class="form-control" id="pwd" placeholder="Enter password">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <div class="checkbox">
+        <label><input type="checkbox"> Remember me</label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Submit</button>
+    </div>
+  </div>
+</form>
+<br>
+  
+<label class="checkbox-inline"><input type="checkbox" value="">Option 1</label>
+<label class="checkbox-inline"><input type="checkbox" value="">Option 2</label>
+<label class="checkbox-inline"><input type="checkbox" value="">Option 3</label>
+
+<br>
+<label class="radio-inline"><input type="radio" name="optradio">Option 1</label>
+<label class="radio-inline"><input type="radio" name="optradio">Option 2</label>
+<label class="radio-inline"><input type="radio" name="optradio">Option 3</label> 
+
+<br>
+ <div class="form-group">
+  <label for="sel1">Select list:</label>
+  <select class="form-control" id="sel1">
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+  </select>
+</div>
+
+<br><br>
+
+ <form class="form-horizontal">
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Focused</label>
+    <div class="col-sm-10">
+      <input class="form-control" id="focusedInput" type="text" value="Click to focus">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword" class="col-sm-2 control-label">Disabled</label>
+    <div class="col-sm-10">
+      <input class="form-control" id="disabledInput" type="text" disabled>
+    </div>
+  </div>
+  <fieldset disabled>
+    <div class="form-group">
+      <label for="disabledTextInput" class="col-sm-2 control-label">Fieldset disabled</label>
+      <div class="col-sm-10">
+        <input type="text" id="disabledTextInput" class="form-control">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="disabledSelect" class="col-sm-2 control-label"></label>
+      <div class="col-sm-10">
+        <select id="disabledSelect" class="form-control">
+          <option>Disabled select</option>
+        </select>
+      </div>
+    </div>
+  </fieldset>
+  <div class="form-group has-success has-feedback">
+    <label class="col-sm-2 control-label" for="inputSuccess">
+    Input with success and icon</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="inputSuccess">
+      <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+    </div>
+  </div>
+  <div class="form-group has-warning has-feedback">
+    <label class="col-sm-2 control-label" for="inputWarning">
+    Input with warning and icon</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="inputWarning">
+      <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
+    </div>
+  </div>
+  <div class="form-group has-error has-feedback">
+    <label class="col-sm-2 control-label" for="inputError">
+    Input with error and icon</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="inputError">
+      <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+    </div>
+  </div>
+</form>
+
+<br><br>
+  <h2>Inline form: control states</h2>
+  <form class="form-inline">
+    <div class="form-group">
+      <label for="focusedInput">Focused</label>
+      <input class="form-control" id="focusedInput" type="text">
+    </div>
+    <div class="form-group">
+      <label for="inputPassword">Disabled</label>
+      <input class="form-control" id="disabledInput" type="text" disabled>
+    </div>
+    <div class="form-group has-success has-feedback">
+      <label for="inputSuccess2">Input with success</label>
+      <input type="text" class="form-control" id="inputSuccess2">
+      <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+    </div>
+    <div class="form-group has-warning has-feedback">
+      <label for="inputWarning2">Input with warning</label>
+      <input type="text" class="form-control" id="inputWarning2">
+      <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
+    </div>
+    <div class="form-group has-error has-feedback">
+      <label for="inputError2">Input with error</label>
+      <input type="text" class="form-control" id="inputError2">
+      <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+    </div>
+  </form>
+
+  <br>
+    <h2>Help text</h2>
+  <p>Use the .help-block class to add a block level help text in forms:</p>
+  <form>
+    <div class="form-group">
+      <label for="pwd">Password:</label>
+      <input type="password" class="form-control" id="pwd" placeholder="Enter password">
+      <span class="help-block">This is some help text that breaks onto a new line and may extend more than one line.</span>
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+  
+  
+</div>
+
+</body>
+</html>
