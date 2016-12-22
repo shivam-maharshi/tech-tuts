@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>Generate Metadata</title>
+  </head>
+  <body>
+     <form action="" method="post" name="submit">
+     {{ form.hidden_tag() }}
+     SP Entity ID: {{ form.sp_entity_id }}<br>
+     SP Description: {{ form.sp_description }}<br>
+     Assertion Consumer Service Endpoint: {{ form.sp_assertion_consumer_service_endpoint }}<br>
+     Single Logout Service Endpoint: {{ form.sp_single_logout_endpoint }}<br>
+     Enable Back Channel SLO Acknowledgment: {{ form.sp_ebcl }}<br>
+     Back Channel SLO Endpoint: {{ form.sp_back_channel_slo_endpoint }}<br>
+     SP Public Key Certificate: {{ form.sp_public_key }}<br>
+     Name ID Format: {{ form.name_id_format }}<br>
+     Assertion Signature: {{ form.assertion_signature }}<br>
+     Signature Algorithm: {{ form.signature_algorithm }}<br>
+     Digest Algorithm: {{ form.digest_algorithm }}<br>
+     Assertion Encryption: {{ form.assertion_enryption }}<br>
+     Team Name: {{ form.team_name }}<br>
+     Technical Contact :: First Name: {{ form.technical_contact_firstname }} Surname: {{ form.technical_contact_surname }} <br>
+     Technical Contact Email: {{ form.technical_contact_email }}<br>
+     Technical Contact Telephone: {{ form.technical_contact_telephone }}<br>
+     Support Contact Name :: First Name: {{ form.support_contact_firstname }} Surname: {{ form.support_contact_surname }} <br>
+     Support Contact Email: {{ form.support_contact_email }}<br>
+     Support Contact Telephone: {{ form.support_contact_telephone }}<br>
+     <p><input type="submit" value="Submit"></p>
+  </body>
+</html>
