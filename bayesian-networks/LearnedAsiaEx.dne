@@ -1,0 +1,104 @@
+// ~->[DNET-1]->~
+
+// File created by an unlicensed user using Netica 5.04 on Oct 28, 2015 at 01:57:23.
+
+bnet Unnamed_1 {
+autoupdate = FALSE;
+
+node visitAsia {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (visit, no_visit);
+	parents = ();
+	probs = 
+		// visit        no visit     
+		  (0.01149885,  0.9885011);
+	numcases = 20002;
+	title = "Visit to Asia";
+	};
+
+node tuberculosis {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (present, absent);
+	parents = (visitAsia);
+	probs = 
+		// present      absent        // visitAsia 
+		  (0.06060606,  0.9393939,    // visit     
+		   0.01082284,  0.9891772);   // no visit  ;
+	numcases = 
+		                 // visitAsia 
+		  (231,          // visit     
+		   19773);       // no visit  ;
+	};
+
+node smoking {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (smoker, nonsmoker);
+	parents = ();
+	probs = 
+		// smoker       nonsmoker    
+		  (0.4965504,   0.5034497);
+	numcases = 20002;
+	};
+
+node cancer {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (present, absent);
+	parents = (smoking);
+	probs = 
+		// present      absent        // smoking   
+		  (0.1021846,   0.8978153,    // smoker    
+		   0.008440075, 0.9915599);   // nonsmoker ;
+	numcases = 
+		                 // smoking   
+		  (9933,         // smoker    
+		   10071);       // nonsmoker ;
+	title = "Lung Cancer";
+	};
+
+node tbOrCa {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (true, false);
+	parents = (cancer, tuberculosis);
+	probs = 
+		// true         false         // cancer  tuberculosis 
+		  (0.9,         0.1,          // present present      
+		   0.9990842,   9.157509e-4,  // present absent       
+		   0.9954545,   0.004545454,  // absent  present      
+		   5.3516e-5,   0.9999465);   // absent  absent       ;
+	numcases = 
+		                 // cancer  tuberculosis 
+		  (10,           // present present      
+		   1092,         // present absent       
+		   220,          // absent  present      
+		   18686);       // absent  absent       ;
+	equation = "tbOrCa (tuberculosis, cancer) = tuberculosis || cancer";
+	EqnDirty = TRUE;
+	title = "Tuberculosis or Cancer";
+	};
+
+node xRay {
+	kind = NATURE;
+	discrete = TRUE;
+	chance = CHANCE;
+	states = (abnormal, normal);
+	parents = (tbOrCa);
+	probs = 
+		// abnormal     normal        // tbOrCa 
+		  (0.9779969,   0.02200303,   // true   
+		   0.0508402,   0.9491598);   // false  ;
+	numcases = 
+		                 // tbOrCa 
+		  (1318,         // true   
+		   18686);       // false  ;
+	};
+};
