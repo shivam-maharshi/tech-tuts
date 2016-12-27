@@ -1,4 +1,4 @@
-# Technology Tutorials
+# [Technology Tutorials](https://github.com/shivam-maharshi/tech-tuts)
 [![Build Status](https://travis-ci.org/shivam-maharshi/Algorithms.svg?branch=master)](https://travis-ci.org/shivam-maharshi/Algorithms)
 
 This project is a compilation of tutorials for a few **technologies - languages, servers, frameworks, benchmarks, libraries, databases, caches & various clients.** Feel free to fork, suggest corrections or ask any questions. Happy learning :)
