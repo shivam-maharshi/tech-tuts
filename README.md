@@ -3,7 +3,7 @@
 
 This project is a compilation of tutorials for a few **technologies - languages, servers, frameworks, benchmarks, libraries, databases, caches & various clients.** Feel free to fork, suggest corrections or ask any questions. Happy learning :)
 
-## [Contents] (https://github.com/shivam-maharshi/tech-tuts)
+## Contents
 * [Amazon Web Services](https://github.com/shivam-maharshi/tech-tuts/tree/master/aws)
 * [Bayesian Networks](https://github.com/shivam-maharshi/tech-tuts/tree/master/bayesian-networks)
 * [Bootstrap](https://github.com/shivam-maharshi/tech-tuts/tree/master/bootstrap)
