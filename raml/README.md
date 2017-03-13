@@ -3,9 +3,9 @@ A RAML tutorial for RESTFul APIs that generates client &amp; server side code fr
 
 # Getting Started
 
-1. git clone https://github.com/shivam-maharshi/RAMLTutorial
+1. git clone https://github.com/shivam-maharshi/tect-tuts
 
-2. cd RAMLTutorial
+2. cd tech-tuts/raml/
 
 3. make install
 
